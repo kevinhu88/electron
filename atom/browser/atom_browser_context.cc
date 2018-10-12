@@ -44,6 +44,7 @@
 #include "content/public/browser/storage_partition.h"
 #include "content/public/common/user_agent.h"
 #include "net/base/escape.h"
+#include "printing/buildflags/buildflags.h"
 
 using content::BrowserThread;
 
@@ -151,6 +152,9 @@ void AtomBrowserContext::InitPrefs() {
   registry->RegisterFilePathPref(prefs::kDownloadDefaultDirectory,
                                  download_dir);
   registry->RegisterDictionaryPref(prefs::kDevToolsFileSystemPaths);
+#if BUILDFLAG(ENABLE_PRINTING)
+  registry->RegisterBooleanPref(prefs::kPrintingEnabled, true);
+#endif
   InspectableWebContentsImpl::RegisterPrefs(registry.get());
   MediaDeviceIDSalt::RegisterPrefs(registry.get());
   ZoomLevelDelegate::RegisterPrefs(registry.get());
